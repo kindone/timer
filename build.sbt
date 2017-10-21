@@ -1,10 +1,17 @@
-name := "timer"
+lazy val projectName = "timer"
 
-organization := "com.kindone"
+lazy val projectOrganization = "com.kindone"
 
-version := "0.1-SNAPSHOT"
+lazy val projectVersion = "0.1-SNAPSHOT"
+
+name := projectName
+
+organization := projectOrganization
+
+version := projectVersion
 
 scalaVersion := "2.12.3"
+
 
 libraryDependencies ++= Seq(
   //"com.kindone" %% "crosslib" % "0.1-SNAPSHOT"
@@ -25,9 +32,17 @@ lazy val crosslib = crossProject.in(file(".")).
   ).
   jvmSettings(
     // Add JVM-specific settings here
+    libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % "3.0.4" % "test",
+      "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % "test"
+    )
   ).
   jsSettings(
     // Add JS-specific settings here
+    libraryDependencies ++= Seq(
+      "org.scalatest" %%% "scalatest" % "3.0.4" % "test",
+      "org.scalamock" %%% "scalamock-scalatest-support" % "3.6.0" % "test"
+    )
   )
 
 lazy val crossJVM = crosslib.jvm
