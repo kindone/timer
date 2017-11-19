@@ -6,7 +6,7 @@ import scala.scalajs.js._
 /**
  * Created by kindone on 2017. 2. 19..
  */
-class DomTimer extends Timer {
+class DomTimeline extends Timeline {
   var UUIDToId: Map[UUID, timers.SetTimeoutHandle] = Map()
 
   override def setTimeout(timeoutMs: Long)(task: => Unit): UUID = {

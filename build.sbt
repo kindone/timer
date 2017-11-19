@@ -2,7 +2,7 @@ lazy val projectName = "timer"
 
 lazy val projectOrganization = "com.kindone"
 
-lazy val projectVersion = "0.1-SNAPSHOT"
+lazy val projectVersion = "0.2-SNAPSHOT"
 
 name := projectName
 
@@ -26,9 +26,9 @@ lazy val root = project.in(file(".")).
 
 lazy val crosslib = crossProject.in(file(".")).
   settings(
-    name := "timer",
-    organization := "com.kindone",
-    version := "0.1-SNAPSHOT"
+    name := projectName,
+    organization := projectOrganization,
+    version := projectVersion
   ).
   jvmSettings(
     // Add JVM-specific settings here
