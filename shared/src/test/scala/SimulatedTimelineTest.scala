@@ -80,4 +80,24 @@ class SimulatedTimelineTest extends FlatSpec with Matchers{
     fired4 should be (true)
 
   }
+
+  "SimulatedTimeline" should "work in nested calls" in {
+    val timeline = new SimulatedTimeline
+
+    var (fired1, fired2, fired3, fired4) = (false, false, false, false)
+
+    val t1 = timeline.setTimeout(1000) {
+      fired1 = true
+      println("fired1")
+      timeline.setTimeout(1000) {
+        fired2 = true
+        println("fired2")
+      }
+    }
+
+    timeline.advance(2000)
+    fired1 should be (true)
+    fired2 should be (true)
+
+  }
 }

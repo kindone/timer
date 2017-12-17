@@ -2,7 +2,7 @@ lazy val projectName = "timer"
 
 lazy val projectOrganization = "com.kindone"
 
-lazy val projectVersion = "0.2-SNAPSHOT"
+lazy val projectVersion = "0.3-SNAPSHOT"
 
 name := projectName
 

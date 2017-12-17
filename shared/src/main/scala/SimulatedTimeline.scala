@@ -26,24 +26,43 @@ class SimulatedTimeline extends Timeline {
     }
 
     scheduledEntries -= uuid
-
   }
 
   def advance(timeMs: Long) = {
     println("timer advancing to: " + (currentTimestampMs + timeMs))
-    val fired = scheduledEntries.filter(entry => entry._2.timestampMs <= currentTimestampMs + timeMs).toSeq
+
     val startTimeMs = currentTimestampMs
     val endTimeMs = currentTimestampMs + timeMs
 
-    fired.sortWith(_._2.timestampMs < _._2.timestampMs).foreach { entry =>
-      println("timer " + entry._1 + " firing at: " + entry._2.timestampMs + " (time flowing from: " + startTimeMs + " to: " + endTimeMs + ")")
-      currentTimestampMs = entry._2.timestampMs
-      scheduledEntries -= entry._1
-      entry._2.task()
-      firedEntries :+= entry._2
+    var next:Option[(UUID, TimerEntry)] = None
+
+    while({
+        next = nextToBeFired(endTimeMs)
+        next.isDefined
+    }) {
+      for(entry <- next) {
+        println("timer " + entry._1 + " firing at: " + entry._2.timestampMs + " (time flowing from: " + startTimeMs + " to: " + endTimeMs + ")")
+        currentTimestampMs = entry._2.timestampMs
+        scheduledEntries -= entry._1
+        entry._2.task()
+        firedEntries :+= entry._2
+      }
     }
 
     currentTimestampMs = endTimeMs
+  }
+
+  private def nextToBeFired(endTimeMs:Long):Option[(UUID, TimerEntry)] = {
+    if(scheduledEntries.isEmpty)
+      None
+    else
+    {
+      val next = scheduledEntries.minBy(entry => entry._2.timestampMs)
+      if(next._2.timestampMs <= endTimeMs)
+        Some(next)
+      else
+        None
+    }
   }
 
   var firedEntries: List[TimerEntry] = List()
